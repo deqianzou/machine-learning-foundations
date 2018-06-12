@@ -13,7 +13,7 @@ class PLAbase
 public:
 	PLAbase();
 	~PLAbase();
-	virtual void train();
+	virtual void train() = 0;
 private:
 
 };
@@ -35,41 +35,46 @@ public:
 		in.open(filename);
 		if (!in)
 		{
-			cerr << "error: cannot open file %s.\n", filename;
+			cerr << "error: cannot open file "<<filename<<".\n";
 		}
 
 		int i = 0, j = 0;
 		string str;
 		string val;
+		vector<double> line;
 		while (getline(in, str))
 		{
+			j = 0;
 			stringstream input(str);
 			while (input >> val)
 			{
-				data[i][j] = atof(val.c_str());
+				line.push_back(atof(val.c_str()));
 				j++;
 			}
+			data.push_back(line);
+			line.clear();
 			i++;
-			j = 0;
 		}
 		m = i;
-		j = j;
+		n = j;
 	}
 
 	~DataReader()
 	{
 		in.close();
-		delete data;
+		delete &data;
 		delete &filename;
 		delete &m;
 		delete &n;
+		delete &in;
 	}
 
 	double** getX(int xzero)
 	{
-		double** x;
+		double** x = new double*[m];
 		for (int i = 0; i < m; i++)
 		{
+			x[i] = new double[n];
 			x[i][0] = xzero;
 			for (int j = 0; j < n - 1; j++)
 			{
@@ -90,14 +95,19 @@ public:
 
 	int* getY()
 	{
-		int* y;
+		int* y = new int[m];
 		for (int i = 0; i < m; i++)
 			y[i] = data[i][n - 1];
+		return y;
 	}
+
+	int getM() { return m; }
+
+	int getN() { return n; }
 
 private:
 	std::string filename;
-	double** data;
+	vector<vector<double>> data;
 	std::ifstream in;
 	int m;
 	int n;

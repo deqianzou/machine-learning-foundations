@@ -1,17 +1,21 @@
 #include <PLAbase.h>
-string trainfile = "hw1_15_train.dat";
 
 class PLA: PLAbase
 {
 public:
-	PLA(double** x, int* y)
+	PLA(double** x, int m, int* y, int n)
 	{
-		int n = sizeof(x[0]) / sizeof(double);
-		for (int i = 0; i < n; i++)
+		col = m;
+		row = n;
+		w = new double[n];
+		for (int i = 0; i < row; i++)
 		{
 			w[i] = 0.0;
 		}
+		this->x = x;
+		this->y = y;
 	}
+
 	~PLA()
 	{
 		delete x;
@@ -25,21 +29,23 @@ private:
 	double** x;
 	double* w;
 	int* y;
+	int col;
+	int row;
 };
 void PLA::train()
 {
-	int m = sizeof(x) / sizeof(double), n = sizeof(x[0]) / sizeof(double);
-	int sum, h;
+	double sum;
+	int h;
 	bool halt = false;
 	int update_times = 0; // number of updates before halt.
 	while (!halt)
 	{
 		halt = true;
-		for (int i = 0; i < m; i++)
+		for (int i = 0; i < col; i++)
 		{
 			sum = 0;
 			/*----- sign(w^T * x) -----*/
-			for (int j = 0; j < n; j++)
+			for (int j = 0; j < row; j++)
 			{
 				sum += w[j] * x[i][j];
 			}
@@ -50,9 +56,9 @@ void PLA::train()
 			{
 				halt = false;
 				update_times++;
-				cout << "executing the %d update.\n", update_times;
+				cout << "executing the "<< update_times<< "update.\n";
 				/*----- fix w -----*/
-				for (int j = 0; j < n; j++)
+				for (int j = 0; j < row; j++)
 				{
 					w[j] += y[i] * x[i][j];
 				}
@@ -63,9 +69,20 @@ void PLA::train()
 }
 int main()
 {
+	string trainfile = "f:\\hw1_15_train.dat";
+	double x0 = 1;
+
 	DataReader* dr = new DataReader(trainfile);
-	double** x = dr->getX(1);
+	double** x = dr->getX(x0);
+	cout << sizeof(**x) << endl;
+	for (int i = 0; i < 5; i++)
+	{
+		cout << x[0][i] << " ";
+	}
 	int* y = dr->getY();
-	PLA* trainer = new PLA(x, y);
+	int m = dr->getM(), n = dr->getN();
+	PLA* trainer = new PLA(x,m, y, n);
 	trainer->train();
+
+	return 0;
 }

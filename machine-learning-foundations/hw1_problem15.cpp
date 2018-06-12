@@ -5,10 +5,10 @@ class PLA: PLAbase
 public:
 	PLA(double** x, int m, int* y, int n)
 	{
-		col = m;
-		row = n;
+		row = m;
+		col = n;
 		w = new double[n];
-		for (int i = 0; i < row; i++)
+		for (int i = 0; i < col; i++)
 		{
 			w[i] = 0.0;
 		}
@@ -29,9 +29,11 @@ private:
 	double** x;
 	double* w;
 	int* y;
-	int col;
 	int row;
+	int col;
 };
+
+/*naive train*/
 void PLA::train()
 {
 	double sum;
@@ -41,11 +43,11 @@ void PLA::train()
 	while (!halt)
 	{
 		halt = true;
-		for (int i = 0; i < col; i++)
+		for (int i = 0; i < row; i++)
 		{
 			sum = 0;
 			/*----- sign(w^T * x) -----*/
-			for (int j = 0; j < row; j++)
+			for (int j = 0; j < col; j++)
 			{
 				sum += w[j] * x[i][j];
 			}
@@ -58,7 +60,7 @@ void PLA::train()
 				update_times++;
 				cout << "executing the "<< update_times<< "update.\n";
 				/*----- fix w -----*/
-				for (int j = 0; j < row; j++)
+				for (int j = 0; j < col; j++)
 				{
 					w[j] += y[i] * x[i][j];
 				}
@@ -67,6 +69,7 @@ void PLA::train()
 		}
 	}
 }
+
 int main()
 {
 	string trainfile = "f:\\hw1_15_train.dat";

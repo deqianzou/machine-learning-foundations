@@ -24,6 +24,9 @@
     <ClCompile Include="hw1_problem15.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="hw1_problem16.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PLAbase.h">

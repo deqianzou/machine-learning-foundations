@@ -1,10 +1,10 @@
 #include <PLAbase.h>
 #include<algorithm>
 
-class PLAWithRandomShuffle : PLAbase
+class PLAWithRandomShuffleAndLearningRate : PLAbase
 {
 public:
-	PLAWithRandomShuffle(double** x, int m, int* y, int n)
+	PLAWithRandomShuffleAndLearningRate(double** x, int m, int* y, int n)
 	{
 		row = m;
 		col = n;
@@ -17,12 +17,13 @@ public:
 		this->y = y;
 	}
 
-	~PLAWithRandomShuffle()
+	~PLAWithRandomShuffleAndLearningRate()
 	{
 		delete x;
 		delete y;
 		delete w;
 	}
+
 	void train();
 
 
@@ -34,10 +35,11 @@ private:
 	int col;
 };
 
-/*randome shuffle train*/
-void PLAWithRandomShuffle::train()
+/*randome shuffle train with learning rate*/
+void PLAWithRandomShuffleAndLearningRate::train()
 {
 	const int times = 2000;
+	const double rate = 0.5;
 	double sum;
 	int h;
 	bool halt = false;
@@ -60,7 +62,7 @@ void PLAWithRandomShuffle::train()
 		while (!halt)
 		{
 			halt = true;
-			for (auto i: idx)
+			for (auto i : idx)
 			{
 				sum = 0;
 				/*----- sign(w^T * x) -----*/
@@ -78,7 +80,7 @@ void PLAWithRandomShuffle::train()
 					/*----- fix w -----*/
 					for (int j = 0; j < col; j++)
 					{
-						w[j] += y[i] * x[i][j];
+						w[j] += rate * y[i] * x[i][j];
 					}
 					/*=================*/
 				}
@@ -87,5 +89,25 @@ void PLAWithRandomShuffle::train()
 		cout << "halted after " << update_times << "updates.\n";
 		total_updates += update_times;
 	}
-	cout << "the average number of updates before the algorithm halts is: " << total_updates*1.0 / times << endl;
+	cout << "the average number of updates before the algorithm halts is: " << total_updates * 1.0 / times << endl;
+}
+
+int main()
+{
+	string trainfile = "f:\\hw1_15_train.dat";
+	double x0 = 1.0;
+
+	DataReader* dr = new DataReader(trainfile);
+	double** x = dr->getX(x0);
+	cout << sizeof(**x) << endl;
+	for (int i = 0; i < 5; i++)
+	{
+		cout << x[0][i] << " ";
+	}
+	int* y = dr->getY();
+	int m = dr->getM(), n = dr->getN();
+	PLAWithRandomShuffleAndLearningRate* trainer = new PLAWithRandomShuffleAndLearningRate(x, m, y, n);
+	trainer->train();
+
+	return 0;
 }

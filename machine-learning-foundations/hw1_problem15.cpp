@@ -69,23 +69,3 @@ void PLA::train()
 		}
 	}
 }
-
-int main()
-{
-	string trainfile = "f:\\hw1_15_train.dat";
-	double x0 = 1;
-
-	DataReader* dr = new DataReader(trainfile);
-	double** x = dr->getX(x0);
-	cout << sizeof(**x) << endl;
-	for (int i = 0; i < 5; i++)
-	{
-		cout << x[0][i] << " ";
-	}
-	int* y = dr->getY();
-	int m = dr->getM(), n = dr->getN();
-	PLA* trainer = new PLA(x,m, y, n);
-	trainer->train();
-
-	return 0;
-}

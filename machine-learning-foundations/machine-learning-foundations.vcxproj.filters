@@ -16,16 +16,22 @@
     <Filter Include="源文件\test">
       <UniqueIdentifier>{29a71cef-7003-4af0-a894-5c46346436e7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\hw1">
+      <UniqueIdentifier>{1daf1cc6-60fa-4194-a3f8-5dfba2545a75}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Test_DataReader.cpp">
       <Filter>源文件\test</Filter>
     </ClCompile>
     <ClCompile Include="hw1_problem15.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\hw1</Filter>
     </ClCompile>
     <ClCompile Include="hw1_problem16.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\hw1</Filter>
+    </ClCompile>
+    <ClCompile Include="hw1_problem17.cpp">
+      <Filter>源文件\hw1</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

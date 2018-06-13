@@ -24,13 +24,7 @@
     <ClCompile Include="Test_DataReader.cpp">
       <Filter>源文件\test</Filter>
     </ClCompile>
-    <ClCompile Include="hw1_problem15.cpp">
-      <Filter>源文件\hw1</Filter>
-    </ClCompile>
-    <ClCompile Include="hw1_problem16.cpp">
-      <Filter>源文件\hw1</Filter>
-    </ClCompile>
-    <ClCompile Include="hw1_problem17.cpp">
+    <ClCompile Include="problem15_17.cpp">
       <Filter>源文件\hw1</Filter>
     </ClCompile>
   </ItemGroup>

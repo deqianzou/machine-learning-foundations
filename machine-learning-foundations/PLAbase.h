@@ -7,13 +7,14 @@
 #include <vector>
 #include <fstream>
 #include<sstream>
+#include<algorithm>
 using namespace std;
 class PLAbase
 {
 public:
 	PLAbase();
 	~PLAbase();
-	virtual void train() = 0;
+	virtual void train(double learingRate=1, bool randomShuffle=false, int cycle=1) = 0;
 private:
 
 };

@@ -37,30 +37,28 @@ void PocketPLA::pocketTrain(int iteration, bool shuffle, bool greedy)
 	{
 		random_shuffle(idx.begin(), idx.end());
 	}
-	bool halt = false;
 	double* bestW = new double[col];
 	double minError = row*1.0;
 	double curError;
 	for (int j = 0; j < col; j++)
 	{
-		bestW[j] = w[j];
+		bestW[j] = 0.0;
 	}
 	minError = getAverageError();
-	int iter = 0, i = 0;
-	double sum = 0, h = 0;
-	for (vector<int>::iterator index = idx.begin(); !halt && index != idx.end(); index = index+1==idx.end()? idx.begin(): index+1)
+	int iter = 0, i = 0, h;
+	double sum = 0.0;
+	for (vector<int>::iterator index = idx.begin(); index != idx.end(); index = index+1==idx.end()? idx.begin(): index+1)
 	{
-		halt = true;
-		sum = 0;
+		sum = 0.0;
 		i = *index;
 		for (int j = 0; j < col; j++)
 		{
-			sum += w[j] * x[i % row][j];
+			sum += w[j] * x[i][j];
 		}
 		h = sum - 0.0 > 0.000001 ? 1 : -1;
 		if (h != y[i])
 		{
-			halt = false;
+			iter++;
 			for (int j = 0; j < col; j++)
 			{
 				w[j] += y[i] * x[i][j];
@@ -68,7 +66,7 @@ void PocketPLA::pocketTrain(int iteration, bool shuffle, bool greedy)
 			if (greedy)
 			{
 				curError = getAverageError();
-				if (curError < minError)
+				if (curError - minError < 0.0)
 				{
 					minError = curError;
 					for (int j = 0; j < col; j++)
@@ -76,14 +74,14 @@ void PocketPLA::pocketTrain(int iteration, bool shuffle, bool greedy)
 						bestW[j] = w[j];
 					}
 				}
-				if (iter + 1 == iteration)
-				{
-					setWeights(bestW);
-					break;
-				}
 			}
-			iter++;
 		}
+		if (iter == iteration)  break;
+		if (minError < 0.000001)  break;
+	}
+	if (greedy)
+	{
+		setWeights(bestW);
 	}
 }
 
@@ -112,13 +110,18 @@ double PocketPLA::getAverageError()
 {
 	int e = 0;
 	double sum = 0;
+	int h;
 	for (int i = 0; i < row; i++)
 	{
 		for (int j = 0; j < col; j++)
 		{
 			sum += w[j] * x[i][j];
 		}
-		e += y[i] == (sum > 0 ? 1 : -1) ? 1 : 0;
+		h = sum - 0.0 > 0.000001 ? 1 : -1;
+		if (h==y[i])
+		{
+			e++;
+		}
 	}
 	return e*1.0 / row;
 }

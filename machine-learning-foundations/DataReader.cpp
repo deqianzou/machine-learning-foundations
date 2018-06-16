@@ -33,9 +33,6 @@ DataReader::DataReader(string file)
 DataReader::~DataReader()
 {
 	in.close();
-	data.~vector();
-	in.~ifstream();
-	filename.~string();
 }
 
 double** DataReader::getX(int xzero)

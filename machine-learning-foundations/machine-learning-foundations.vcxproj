@@ -118,10 +118,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AwesomePLA.cpp" />
+    <ClCompile Include="DataReader.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="PLAbase.cpp" />
+    <ClCompile Include="PocketPLA.cpp" />
     <ClCompile Include="problem15_17.cpp" />
+    <ClCompile Include="question18_20.cpp" />
     <ClCompile Include="Test_DataReader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DataReader.h" />
     <ClInclude Include="PLAbase.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

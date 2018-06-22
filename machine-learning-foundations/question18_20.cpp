@@ -19,7 +19,7 @@ void PocketPLAtrain(string trainFile, string testFile)
 	}
 	cout << "problem 18: average test error is " << averageError / cycle << endl;
 	cout << "problem 18: mission complete." << endl;
-
+	
 	cout << "problem 19: start training..." << endl;
 	averageError = 0.0;
 	for (int i = 0; i < cycle; i++)

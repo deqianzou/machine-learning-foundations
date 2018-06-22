@@ -7,4 +7,4 @@ int main()
 	PocketPLAtrain("f:\\hw1_18_train.dat", "f:\\hw1_18_test.dat");
 
 	return 0;
-}
+} 

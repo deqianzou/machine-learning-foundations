@@ -2,7 +2,7 @@
 
 PocketPLA::PocketPLA(DataReader* dr)
 {
-	new(this) PocketPLA(dr->getX(), dr->getM(), dr->getY(), dr->getN());
+	new(this) PocketPLA(dr->getX(1), dr->getM(), dr->getY(), dr->getN());
 }
 
 PocketPLA::PocketPLA(double** x, int m, int* y, int n)
@@ -57,7 +57,7 @@ void PocketPLA::pocketTrain(int iteration, bool shuffle, bool greedy)
 		}
 		h = sum - 0.0 > 0.000001 ? 1 : -1;
 		if (h != y[i])
-		{
+		{ 
 			iter++;
 			for (int j = 0; j < col; j++)
 			{
@@ -77,7 +77,7 @@ void PocketPLA::pocketTrain(int iteration, bool shuffle, bool greedy)
 			}
 		}
 		if (iter == iteration)  break;
-		if (minError < 0.000001)  break;
+		// if (minError < 0.01)  break;
 	}
 	if (greedy)
 	{
@@ -118,7 +118,7 @@ double PocketPLA::getAverageError()
 			sum += w[j] * x[i][j];
 		}
 		h = sum - 0.0 > 0.000001 ? 1 : -1;
-		if (h==y[i])
+		if (h!=y[i])
 		{
 			e++;
 		}

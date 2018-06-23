@@ -1,13 +1,19 @@
 #include <PLAbase.h>
 
-AwesomePLA::AwesomePLA(double** x, int m, int* y, int n)
+
+
+AwesomePLA::AwesomePLA(DataReader* dr)
+{
+	new(this) AwesomePLA(dr->getX(1), dr->getM(), dr->getY(), dr->getN());
+}
+
+AwesomePLA::AwesomePLA(vector<vector<double>> x, int m, vector<double> y, int n)
 {
 	row = m;
 	col = n;
-	w = new double[n];
 	for (int i = 0; i < col; i++)
 	{
-		w[i] = 0.0;
+		w.push_back(0);
 	}
 	this->x = x;
 	this->y = y;
@@ -15,9 +21,6 @@ AwesomePLA::AwesomePLA(double** x, int m, int* y, int n)
 
 AwesomePLA::~AwesomePLA()
 {
-	delete []x;
-	delete []y;
-	delete []w;
 }
 
 void AwesomePLA::cleanWeights()
@@ -35,7 +38,6 @@ void AwesomePLA::train(double learingRate, bool randomShuffle, int cycle)
 		cycle = 1;
 		cout << "Random Shuffle is not on, the train will execute only one cycle." << endl;
 	}
-	double sum;
 	int h;
 	bool halt = false;
 	int total_updates = 0;
@@ -60,15 +62,7 @@ void AwesomePLA::train(double learingRate, bool randomShuffle, int cycle)
 			halt = true;
 			for (auto i : idx)
 			{
-				sum = 0;
-				/*----- sign(w^T * x) -----*/
-				for (int j = 0; j < col; j++)
-				{
-					sum += w[j] * x[i][j];
-				}
-				h = sum - 0.0 <= 0.000001 ? -1 : +1;
-				/*=========================*/
-
+				h = hypothesis(x[i], w, col);
 				if (h != y[i])
 				{
 					halt = false;
@@ -90,4 +84,18 @@ void AwesomePLA::train(double learingRate, bool randomShuffle, int cycle)
 	{
 		cout << "the average number of updates before the algorithm halts is: " << total_updates * 1.0 / cycle << endl;
 	}
+}
+
+int AwesomePLA::hypothesis(vector<double> xn, vector<double> w, int dimension)
+{
+	assert(xn.size() == dimension);
+	assert(w.size() == dimension);
+	double sum = 0.0;
+	int h;
+	for (int j = 0; j < dimension; j++)
+	{
+		sum += w[j] * xn[j];
+	}
+	h = sum - 0.0 > 0.000001 ? 1 : -1;
+	return h;
 }

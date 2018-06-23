@@ -35,32 +35,31 @@ DataReader::~DataReader()
 	in.close();
 }
 
-double** DataReader::getX(int xzero)
+vector<vector<double>> DataReader::getX(double xzero)
 {
-	double** x = new double*[m];
+	vector<vector<double>> x;
 	for (int i = 0; i < m; i++)
 	{
-		x[i] = new double[n];
-		x[i][0] = xzero;
+		vector<double> tmp({xzero});
 		for (int j = 0; j < n - 1; j++)
 		{
-			x[i][j + 1] = data[i][j];
+			tmp.push_back(data[i][j]);
 		}
+		x.push_back(tmp);
 	}
-
 	return x;
 }
 
-double** DataReader::getX()
+vector<vector<double>> DataReader::getX()
 {
-	return getX(0);
+	return getX(1);
 }
 
-int* DataReader::getY()
+vector<double> DataReader::getY()
 {
-	int* y = new int[m];
+	vector<double> y;
 	for (int i = 0; i < m; i++)
-		y[i] = data[i][n - 1];
+		y.push_back(data[i][n - 1]);
 	return y;
 }
 

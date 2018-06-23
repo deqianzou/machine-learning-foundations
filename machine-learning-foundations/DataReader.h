@@ -15,14 +15,14 @@ public:
 
 	~DataReader();
 
-	double** getX(int xzero);
+	vector<vector<double>> getX(double xzero);
 
 	/*
-	*  with default x0=0
+	*  with default x0=1
 	*/
-	double** getX();
+	vector<vector<double>> getX();
 	
-	int* getY();
+	vector<double> getY();
 
 	int getM();
 

@@ -1,11 +1,12 @@
 #include <PLAbase.h>
 
-void PLAtrain(string trainfile)
+void hw1_15_17(string trainfile)
 {
+	cout << "\thw1, 15, 16 and 17:" << endl;
 	double x0 = 1.0;
 	DataReader* dr = new DataReader(trainfile);
-	double** x = dr->getX(x0);
-	int* y = dr->getY();
+	vector<vector<double>> x = dr->getX(x0);
+	vector<double> y = dr->getY();
 	int m = dr->getM(), n = dr->getN();
 	double learningRate = 1;
 	bool randomShuffle = false;
@@ -30,4 +31,5 @@ void PLAtrain(string trainfile)
 	cout << "problem 17: training complete." << endl;
 	dr->~DataReader();
 	trainer->~AwesomePLA();
+	cout << "==========" << endl;
 }

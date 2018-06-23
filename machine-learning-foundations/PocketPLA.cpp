@@ -5,14 +5,14 @@ PocketPLA::PocketPLA(DataReader* dr)
 	new(this) PocketPLA(dr->getX(1), dr->getM(), dr->getY(), dr->getN());
 }
 
-PocketPLA::PocketPLA(double** x, int m, int* y, int n)
+PocketPLA::PocketPLA(vector<vector<double>> x, int m, vector<double> y, int n)
 {
 	row = m;
 	col = n;
-	w = new double[n];
+
 	for (int i = 0; i < col; i++)
 	{
-		w[i] = 0.0;
+		w.push_back(0);
 	}
 	this->x = x;
 	this->y = y;
@@ -20,11 +20,7 @@ PocketPLA::PocketPLA(double** x, int m, int* y, int n)
 
 PocketPLA::~PocketPLA()
 {
-	delete []x;
-	delete []y;
-	delete []w;
 }
-
 
 void PocketPLA::pocketTrain(int iteration, bool shuffle, bool greedy)
 {
@@ -37,26 +33,16 @@ void PocketPLA::pocketTrain(int iteration, bool shuffle, bool greedy)
 	{
 		random_shuffle(idx.begin(), idx.end());
 	}
-	double* bestW = new double[col];
+	vector<double> bestW(col, 0);
 	double minError = row*1.0;
 	double curError;
-	for (int j = 0; j < col; j++)
-	{
-		bestW[j] = 0.0;
-	}
 	minError = getAverageError();
 	int iter = 0, i = 0, h;
-	double sum = 0.0;
 	for (vector<int>::iterator index = idx.begin(); index != idx.end(); index = index+1==idx.end()? idx.begin(): index+1)
 	{
-		sum = 0.0;
 		i = *index;
-		for (int j = 0; j < col; j++)
-		{
-			sum += w[j] * x[i][j];
-		}
-		h = sum - 0.0 > 0.000001 ? 1 : -1;
-		if (h != y[i])
+		h = hypothesis(x[i], w, col);
+		if (h != (int)y[i])
 		{ 
 			iter++;
 			for (int j = 0; j < col; j++)
@@ -85,7 +71,7 @@ void PocketPLA::pocketTrain(int iteration, bool shuffle, bool greedy)
 	}
 }
 
-void PocketPLA::setWeights(double * weights)
+void PocketPLA::setWeights(vector<double> weights)
 {
 	for (int j = 0; j < col; j++)
 	{
@@ -109,15 +95,10 @@ void PocketPLA::copyWeights(PocketPLA * p)
 double PocketPLA::getAverageError()
 {
 	int e = 0;
-	double sum = 0;
 	int h;
 	for (int i = 0; i < row; i++)
 	{
-		for (int j = 0; j < col; j++)
-		{
-			sum += w[j] * x[i][j];
-		}
-		h = sum - 0.0 > 0.000001 ? 1 : -1;
+		h = hypothesis(x[i], w, col);
 		if (h!=y[i])
 		{
 			e++;
@@ -126,7 +107,21 @@ double PocketPLA::getAverageError()
 	return e*1.0 / row;
 }
 
-double* PocketPLA::getWeights()
+vector<double> PocketPLA::getWeights()
 {
 	return w;
+}
+
+int PocketPLA::hypothesis(vector<double> xn, vector<double> w, int dimension)
+{
+	assert(xn.size() == dimension);
+	assert(w.size() == dimension);
+	double sum = 0.0;
+	int h;
+	for (int j = 0; j < dimension; j++)
+	{
+		sum += w[j] * xn[j];
+	}
+	h = sum - 0.0 > 0.000001 ? 1 : -1;
+	return h;
 }

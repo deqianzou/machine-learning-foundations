@@ -1,6 +1,7 @@
 #include <PLAbase.h>
-void PocketPLAtrain(string trainFile, string testFile)
+void hw1_18_20(string trainFile, string testFile)
 {
+	cout << "\thw1, 18, 19 and 20:" << endl;
 	int iteration = 50;
 	int cycle = 2000;
 	DataReader* drTrain = new DataReader(trainFile);
@@ -48,4 +49,5 @@ void PocketPLAtrain(string trainFile, string testFile)
 	drTest->~DataReader();
 	trainer->~PocketPLA();
 	tester->~PocketPLA();
+	cout << "==========" << endl;
 }

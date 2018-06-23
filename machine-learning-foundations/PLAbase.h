@@ -4,7 +4,8 @@
 
 #include<DataReader.h>
 #include<algorithm>
-// using namespace std;
+#include <assert.h>
+
 class PLAbase
 {
 public:
@@ -13,6 +14,7 @@ public:
 	virtual void train(double learingRate, bool randomShuffle, int cycle);
 	virtual void pocketTrain(int iteration);
 	virtual void cleanWeights();
+	
 private:
 
 };
@@ -20,19 +22,23 @@ private:
 class AwesomePLA : PLAbase
 {
 public:
-	AwesomePLA(double** x, int m, int* y, int n);
+	AwesomePLA(DataReader* dr);
+
+	AwesomePLA(vector<vector<double>> x, int m, vector<double> y, int n);
 
 	~AwesomePLA();
 
 	void train(double learingRate, bool randomShuffle, int cycle);
+
 	void cleanWeights();
+
 private:
-	double** x;
-	double* w;
-	int* y;
+	vector<vector<double>> x;
+	vector<double> w;
+	vector<double> y;
 	int row;
 	int col;
-
+	int hypothesis(vector<double> xn, vector<double> w, int dimension);
 };
 
 class PocketPLA : PLAbase
@@ -40,13 +46,13 @@ class PocketPLA : PLAbase
 public:
 	PocketPLA(DataReader* dr);
 
-	PocketPLA(double** x, int m, int* y, int n);
+	PocketPLA(vector<vector<double>> x, int m, vector<double> y, int n);
 
 	~PocketPLA();
 
 	void pocketTrain(int iteration, bool shuffle, bool greedy);
 
-	void setWeights(double* weights);
+	void setWeights(vector<double> weights);
 
 	void cleanWeights();
 
@@ -54,13 +60,15 @@ public:
 
 	double getAverageError();
 
-	double* getWeights();
+	vector<double> getWeights();
 
 private:
-	double** x;
-	double* w;
-	int* y;
+	vector<vector<double>> x;
+	vector<double> w;
+	vector<double> y;
 	int row;
 	int col;
+
+	int hypothesis(vector<double> xn, vector<double> w, int dimension);
 };
 #endif
